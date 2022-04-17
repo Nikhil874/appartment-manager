@@ -13,12 +13,13 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { getFlat } from "../loginDetails/action";
+import Stack from '@mui/material/Stack';
 export const HomePage=()=>{
     let [flatData,setFlatData]=useState([]);
     const _id =useSelector((store)=>store._id)
     // console.log(_id).
- const getData=()=>{
-      axios.get(`http://localhost:3001/flats/${_id}`).then((res)=>{
+ const  getData=async()=>{
+     await axios.get(`http://localhost:3001/flats/${_id}`).then((res)=>{
           setFlatData([...res.data])
           console.log(res.data);
       })
@@ -38,11 +39,47 @@ function handleLogining(){
         dispatch(getFlat(id))
         navigate("/residents")
     }
-
+    
+    function handleBlock(e){
+        
+    let block=e.target.value;
+  
+    let result=flatData.filter((e)=>{
+        if(e.block==block){
+            return true;
+        }
+        })
+        setFlatData([...result]);
+       
+    }
+    
+        function handleFlatNo(value){
+            if(value==1){
+                flatData.sort(function(a,b) {return a.flatNo-b.flatNo})
+            }else{
+              flatData.sort(function(a,b) {return b.flatNo-a.flatNo})
+            }
+            setFlatData([...flatData])
+          
+        }
+    let [type,setType]=useState(true)
+    function handleType(){
+        let value=type?"owner":"tenant"
+        setType(type?false:true);
+    }
 return(
     <><h2>Home Page</h2>
+   
     {_id?  <Button variant="contained" onClick={handlenaviagte}>Add Flat</Button>:<Button variant="contained" onClick={handleLogining}>Login/SignUp</Button>}
-
+   <br />
+   {" "}
+   <input type="text" placeholder="Search Block" onChange={(e)=>{handleBlock(e)}} style={{"margin-left":"-80%"}} />
+   <Stack spacing={2} direction="row">
+       <h3>Filter By:</h3>     
+      <Button variant="text" onClick={()=>handleType} >{type?"tenant":"owner"}</Button>
+      <Button variant="text" onClick={()=>{handleFlatNo(1)}}>Flat No asc</Button>
+      <Button variant="text" onClick={()=>{handleFlatNo(-1)}}>Flat No desc</Button>
+    </Stack>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>

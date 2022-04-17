@@ -33,7 +33,7 @@ export const Addflats=()=>{
     }
     function handleResident2(e){
         const {name,value}=e.target;
-        setResident2({...resident1,[name]:value});
+        setResident2({...resident2,[name]:value});
     }
     const _id =useSelector((store)=>store._id)
    async function handleAddflat(){

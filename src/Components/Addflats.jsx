@@ -2,6 +2,7 @@ import { useState } from "react"
 import Button from '@mui/material/Button';
 import axios from "axios";
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom";
 export const Addflats=()=>{
     const [flatdetails,setFlatdetails]=useState({
         block:"",
@@ -16,12 +17,12 @@ export const Addflats=()=>{
     })
     const  handleflatDetails1=(e)=>{
         console.log(e.target.value)
-        const [name,value]=e.target;
-        console.log(...flatdetails)
-        setFlatdetails({...flatdetails,[name]:value});
+        const {id,value}=e.target;
+        // console.log(...flatdetails)
+        setFlatdetails({...flatdetails,[id]:value});
     }
     function handleResident1(e){
-        const [name,value]=e.target;
+        const {name,value}=e.target;
         setResident1({...resident1,[name]:value});
     }
     const _id =useSelector((store)=>store._id)
@@ -34,15 +35,23 @@ export const Addflats=()=>{
          })
     }
     
-
+    let navigate=useNavigate();
+    function handleHome(){
+    navigate("/")
+    }
+    function handleLogining(){
+        navigate("/login")
+        }
     return(
         <>
+        {_id? <Button variant="contained" onClick={handleHome}>Home</Button>:<Button variant="contained" onClick={handleLogining}>Login/SignUp</Button>}
+     
         <h1>Add Flats</h1>
-        <input type="text" placeholder="Block" name="block" onChange={(e)=>{handleflatDetails1(e)}}/>
+        <input type="text" placeholder="Block" id="block" onChange={(e)=>{handleflatDetails1(e)}}/>
         <br />
-        <input type="number" placeholder="Flat no" name="flatNo" onChange={(e)=>{handleflatDetails1(e)}} />
+        <input type="number" placeholder="Flat no" id="flatNo" onChange={(e)=>{handleflatDetails1(e)}} />
         <br />
-        <input type="text" placeholder="Resident Type" name="residentType" onChange={(e)=>{handleflatDetails1(e)}}/>
+        <input type="text" placeholder="Resident Type" id="residentType" onChange={(e)=>{handleflatDetails1(e)}}/>
         <br />
         <h4>Resident 1:</h4>
         <input type="text" name="name" placeholder="enter name" onChange={(e)=>{handleResident1(e)}}/>

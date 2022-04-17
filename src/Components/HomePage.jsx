@@ -9,6 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from "axios"
 import { useEffect, useState } from "react"
+import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+
 export const HomePage=()=>{
     let [flatData,setFlatData]=useState([]);
     const _id =useSelector((store)=>store._id)
@@ -22,9 +25,17 @@ export const HomePage=()=>{
  useEffect(()=>{
 getData();
  },[])
-
+ let navigate=useNavigate();
+function handlenaviagte(){
+navigate("/addFlats")
+}
+function handleLogining(){
+    navigate("/login")
+    }
 return(
     <><h2>Home Page</h2>
+    {_id?  <Button variant="contained" onClick={handlenaviagte}>Add Flat</Button>:<Button variant="contained" onClick={handleLogining}>Login/SignUp</Button>}
+
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>

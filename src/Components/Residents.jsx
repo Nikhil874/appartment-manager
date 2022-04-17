@@ -20,7 +20,7 @@ export const Residents=()=>{
         navigate("/")
         }
         const getData=()=>{
-            axios.get(`http://localhost:3001/flats/residents/${id}`).then((res)=>{
+            axios.get(`https://appartment-server.herokuapp.com/flats/residents/${id}`).then((res)=>{
                 setResidents([...res.data.residents])
                 console.log(res.data);
             })

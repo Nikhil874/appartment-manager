@@ -25,7 +25,7 @@ export const LoginPage=()=>{
         setUser1({...user1,[name]:value})
     }
     function handleSignUp(){
-     axios.post("http://localhost:3001/users/register",user).then((res)=>{
+     axios.post("https://appartment-server.herokuapp.com/users/register",user).then((res)=>{
         console.log(res.data.user._id);
         dispatch(getLogin(res.data.user._id))
          alert("registered sucessfully")
@@ -45,7 +45,7 @@ export const LoginPage=()=>{
 
 
     function handleLogin(){
-        axios.post("http://localhost:3001/users/login",user1).then((res)=>{
+        axios.post("https://appartment-server.herokuapp.com/users/login",user1).then((res)=>{
             console.log(res.data.user._id);
             dispatch(getLogin(res.data.user._id))
             alert("LoggedIn sucessfully")

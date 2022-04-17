@@ -37,7 +37,7 @@ export const Addflats=()=>{
     }
     const _id =useSelector((store)=>store._id)
    async function handleAddflat(){
-         await axios.post("http://localhost:3001/flats",{
+         await axios.post("https://appartment-server.herokuapp.com/flats",{
              ...flatdetails,residents:[resident1,resident2],managerId:_id
          }).then((res)=>{
              console.log(res);

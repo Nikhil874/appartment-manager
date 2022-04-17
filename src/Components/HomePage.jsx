@@ -19,7 +19,7 @@ export const HomePage=()=>{
     const _id =useSelector((store)=>store._id)
     // console.log(_id).
  const  getData=async()=>{
-     await axios.get(`http://localhost:3001/flats/${_id}`).then((res)=>{
+     await axios.get(`https://appartment-server.herokuapp.com/flats/${_id}`).then((res)=>{
           setFlatData([...res.data])
           console.log(res.data);
       })

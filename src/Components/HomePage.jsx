@@ -40,18 +40,7 @@ function handleLogining(){
         navigate("/residents")
     }
     
-    function handleBlock(e){
-        
-    let block=e.target.value;
   
-    let result=flatData.filter((e)=>{
-        if(e.block==block){
-            return true;
-        }
-        })
-        setFlatData([...result]);
-       
-    }
     
         function handleFlatNo(value){
             if(value==1){
@@ -67,13 +56,14 @@ function handleLogining(){
         let value=type?"owner":"tenant"
         setType(type?false:true);
     }
+    let [block,setBlock]=useState("");
 return(
     <><h2>Home Page</h2>
    
     {_id?  <Button variant="contained" onClick={handlenaviagte}>Add Flat</Button>:<Button variant="contained" onClick={handleLogining}>Login/SignUp</Button>}
    <br />
    {" "}
-   <input type="text" placeholder="Search Block" onChange={(e)=>{handleBlock(e)}} style={{"margin-left":"-80%"}} />
+   <input type="text" placeholder="Search Block" onChange={(e)=>{setBlock(e.target.value)}} style={{"margin-left":"-80%"}} />
    <Stack spacing={2} direction="row">
        <h3>Filter By:</h3>     
       <Button variant="text" onClick={()=>handleType} >{type?"tenant":"owner"}</Button>
@@ -94,7 +84,15 @@ return(
         </TableHead>
         <TableBody>
            {
-               flatData.map((item)=>{
+               flatData.filter((e)=>{
+                   if(block==""){
+                       return true;
+                   }else{
+                       if(e.block==block){
+                           return true;
+                       }
+                   }
+               }).map((item)=>{
                    return <TableRow key={item._id}  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
                       <TableCell align="right">{item.block}</TableCell>
                       <TableCell align="right">{item.flatNo}</TableCell>

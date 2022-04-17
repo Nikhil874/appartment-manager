@@ -11,7 +11,8 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from 'react-redux';
+import { getFlat } from "../loginDetails/action";
 export const HomePage=()=>{
     let [flatData,setFlatData]=useState([]);
     const _id =useSelector((store)=>store._id)
@@ -32,6 +33,12 @@ navigate("/addFlats")
 function handleLogining(){
     navigate("/login")
     }
+    let dispatch=useDispatch();
+    function handleDetails(id){
+        dispatch(getFlat(id))
+        navigate("/residents")
+    }
+
 return(
     <><h2>Home Page</h2>
     {_id?  <Button variant="contained" onClick={handlenaviagte}>Add Flat</Button>:<Button variant="contained" onClick={handleLogining}>Login/SignUp</Button>}
@@ -44,8 +51,8 @@ return(
             <TableCell align="right">FlatNo.</TableCell>
             <TableCell align="right">Resident Type</TableCell>
             <TableCell align="right">No.of Residents</TableCell>
-            <TableCell align="right">Edit</TableCell>
-            <TableCell align="right">Delete</TableCell>
+            {/* <TableCell align="right">Edit</TableCell> */}
+            <TableCell align="right">Details</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -56,9 +63,9 @@ return(
                       <TableCell align="right">{item.flatNo}</TableCell>
                       <TableCell align="right">{item.residentType}</TableCell>
                       <TableCell align="right">{item.residents.length}</TableCell>
-                      <TableCell align="right">Edit</TableCell>
+                      {/* <TableCell align="right">Edit</TableCell> */}
                      
-                      <TableCell align="right" >Delete </TableCell>
+                      <TableCell align="right" onClick={()=>{handleDetails(item._id)}} >Details</TableCell>
                    </TableRow>
                })
            }

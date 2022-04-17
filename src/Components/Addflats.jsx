@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import axios from "axios";
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
+
 export const Addflats=()=>{
     const [flatdetails,setFlatdetails]=useState({
         block:"",
@@ -11,6 +12,11 @@ export const Addflats=()=>{
 
     })
     const [resident1,setResident1]=useState({
+        name:"",
+        age:"",
+        gender:""
+    })
+    const [resident2,setResident2]=useState({
         name:"",
         age:"",
         gender:""
@@ -25,10 +31,14 @@ export const Addflats=()=>{
         const {name,value}=e.target;
         setResident1({...resident1,[name]:value});
     }
+    function handleResident2(e){
+        const {name,value}=e.target;
+        setResident2({...resident1,[name]:value});
+    }
     const _id =useSelector((store)=>store._id)
    async function handleAddflat(){
          await axios.post("http://localhost:3001/flats",{
-             ...flatdetails,residents:[resident1],managerId:_id
+             ...flatdetails,residents:[resident1,resident2],managerId:_id
          }).then((res)=>{
              console.log(res);
              alert("Sucessfully added")
@@ -59,6 +69,16 @@ export const Addflats=()=>{
         <input type="number" name="age" placeholder="enter age" onChange={(e)=>{handleResident1(e)}}/>
         <br />
         <input type="string" name="gender" placeholder="enter gender" onChange={(e)=>{handleResident1(e)}}/>
+        <br />
+        {/* <Button variant="contained" onClick={handleAddflat}>Submit</Button> */}
+{/* 
+        <br /> */}
+        <h4>Resident 2:</h4>
+        <input type="text" name="name" placeholder="enter name" onChange={(e)=>{handleResident2(e)}}/>
+        <br />
+        <input type="number" name="age" placeholder="enter age" onChange={(e)=>{handleResident2(e)}}/>
+        <br />
+        <input type="string" name="gender" placeholder="enter gender" onChange={(e)=>{handleResident2(e)}}/>
         <br />
         <Button variant="contained" onClick={handleAddflat}>Submit</Button>
         </>

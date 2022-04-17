@@ -20,7 +20,7 @@ export const LoginPage=()=>{
         setUser({...user,[id]:value})
     }
     function handleChange1(e){
-        console.log(e.target.value)
+        // console.log(e.target.value)
         let {name,value}=e.target;
         setUser1({...user1,[name]:value})
     }

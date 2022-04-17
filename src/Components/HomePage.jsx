@@ -57,6 +57,17 @@ function handleLogining(){
         setType(type?false:true);
     }
     let [block,setBlock]=useState("");
+    let [tenant,setTenant]=useState({type:""});
+    let [owner,setOwner]=useState({type:""});
+    function handleTenant(){
+        setOwner({...owner,type:""});
+        setTenant({...tenant,type:"tenant"})
+    }
+    function handleOwner(){
+        setTenant({...tenant,type:""});
+        setOwner({...owner,type:"owner"})
+        console.log(owner);
+    }
 return(
     <><h2>Home Page</h2>
    
@@ -66,7 +77,8 @@ return(
    <input type="text" placeholder="Search Block" onChange={(e)=>{setBlock(e.target.value)}} style={{"margin-left":"-80%"}} />
    <Stack spacing={2} direction="row">
        <h3>Filter By:</h3>     
-      <Button variant="text" onClick={()=>handleType} >{type?"tenant":"owner"}</Button>
+      <Button variant="text" onClick={handleTenant} >Tenant</Button>
+      <Button variant="text" onClick={handleOwner} >Owner</Button>
       <Button variant="text" onClick={()=>{handleFlatNo(1)}}>Flat No asc</Button>
       <Button variant="text" onClick={()=>{handleFlatNo(-1)}}>Flat No desc</Button>
     </Stack>
@@ -90,6 +102,16 @@ return(
                    }else{
                        if(e.block==block){
                            return true;
+                       }
+                   }
+               }).filter((e)=>{
+                   if(tenant.type==""&&owner.type==""){
+                       return true;
+                   }else if(owner.type==""&&e.residentType==tenant.type){
+                       return true;
+                   }else{
+                       if(e.residentType==owner.type){
+                           return true
                        }
                    }
                }).map((item)=>{

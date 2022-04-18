@@ -73,9 +73,10 @@ export const LoginPage=()=>{
        let loading =useSelector((store)=>store.loading);
     return(
         <>
-        <h2>SignUp</h2>
+        
       {loading?<CircularProgress color="secondary"/>:
       <>
+      <h2>SignUp</h2>
       {/* <button onClick={()=>setLoading(loading?false:true)}>Loading</button>  */}
    <input type="text" placeholder="Enter Email" id='email' value={user.email} onChange={(e)=>{handleChange(e)}} />
    <br />

@@ -1,10 +1,12 @@
 import Button from '@mui/material/Button';
 import axios from "axios"
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getLogin } from '../loginDetails/action';
+import { useDispatch,useSelector } from 'react-redux';
+import { getLogin, toggleLoading } from '../loginDetails/action';
 import {  useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 export const LoginPage=()=>{
+    
     const navigate=useNavigate();
     let dispatch=useDispatch();
     const [user,setUser]=useState({
@@ -25,9 +27,11 @@ export const LoginPage=()=>{
         setUser1({...user1,[name]:value})
     }
     function handleSignUp(){
+        dispatch(toggleLoading(true))
      axios.post("https://appartment-server.herokuapp.com/users/register",user).then((res)=>{
         console.log(res.data.user._id);
         dispatch(getLogin(res.data.user._id))
+        dispatch(toggleLoading(false));
          alert("registered sucessfully")
          setUser({
             email:"",
@@ -35,6 +39,7 @@ export const LoginPage=()=>{
          })
          navigate("/addFlats")
      }).catch((err)=>{console.log(err)
+        dispatch(toggleLoading(false));
     alert("User Alreay Exist Please Login")
     setUser({
         email:"",
@@ -45,16 +50,19 @@ export const LoginPage=()=>{
 
 
     function handleLogin(){
+        dispatch(toggleLoading(true))
         axios.post("https://appartment-server.herokuapp.com/users/login",user1).then((res)=>{
             console.log(res.data.user._id);
             dispatch(getLogin(res.data.user._id))
+            dispatch(toggleLoading(false))
             alert("LoggedIn sucessfully")
             setUser1({
                email:"",
                password:""
             })
             navigate("/")
-        }).catch((err)=>{console.log(err)
+        }).catch((err)=>{console.log(err);
+            dispatch(toggleLoading(false));
        alert("Invalid Credentials")
        setUser1({
            email:"",
@@ -62,9 +70,13 @@ export const LoginPage=()=>{
         })
        })
        }
+       let loading =useSelector((store)=>store.loading);
     return(
         <>
         <h2>SignUp</h2>
+      {loading?<CircularProgress color="secondary"/>:
+      <>
+      {/* <button onClick={()=>setLoading(loading?false:true)}>Loading</button>  */}
    <input type="text" placeholder="Enter Email" id='email' value={user.email} onChange={(e)=>{handleChange(e)}} />
    <br />
    <input type="password" placeholder="Password" id='password' value={user.password} onChange={(e)=>{handleChange(e)}}/>
@@ -75,7 +87,7 @@ export const LoginPage=()=>{
    <br />
    <input type="password" placeholder="Password" name='password' value={user1.password} onChange={(e)=>{handleChange1(e)}} />
    <br />
-   <Button variant="contained" onClick={handleLogin}>Submit</Button>
+   <Button variant="contained" onClick={handleLogin}>Submit</Button></> }
       
       </>
     )

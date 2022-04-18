@@ -14,14 +14,21 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { getFlat } from "../loginDetails/action";
 import Stack from '@mui/material/Stack';
+import { toggleLoading } from "../loginDetails/action";
+import CircularProgress from '@mui/material/CircularProgress';
 export const HomePage=()=>{
     let [flatData,setFlatData]=useState([]);
     const _id =useSelector((store)=>store._id)
     // console.log(_id).
  const  getData=async()=>{
+    // dispatch(toggleLoading(true))
      await axios.get(`https://appartment-server.herokuapp.com/flats/${_id}`).then((res)=>{
+        // dispatch(toggleLoading(false))
           setFlatData([...res.data])
           console.log(res.data);
+
+      }).catch((err)=>{
+        // dispatch(toggleLoading(false))   
       })
  }
  useEffect(()=>{
@@ -68,8 +75,12 @@ function handleLogining(){
         setOwner({...owner,type:"owner"})
         console.log(owner);
     }
+    let loading =useSelector((store)=>store.loading);
 return(
-    <><h2>Home Page</h2>
+    <>
+    {loading?<CircularProgress color="secondary"/>:
+    <>
+    <h2>Home Page</h2>
    
     {_id?  <Button variant="contained" onClick={handlenaviagte}>Add Flat</Button>:<Button variant="contained" onClick={handleLogining}>Login/SignUp</Button>}
    <br />
@@ -129,6 +140,7 @@ return(
         </TableBody>
         </Table>
         </TableContainer>
+        </>}
         </>
 )
 }

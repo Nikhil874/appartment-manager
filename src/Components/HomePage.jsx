@@ -23,19 +23,22 @@ export const HomePage=()=>{
     const _id =useSelector((store)=>store._id)
     // console.log(_id).
  const  getData=async()=>{
-    // dispatch(toggleLoading(true))
+    dispatch(toggleLoading(true))
      await axios.get(`https://appartment-server.herokuapp.com/flats/${_id}?page=${page}`).then((res)=>{
-        // dispatch(toggleLoading(false))
+        dispatch(toggleLoading(false))
           setFlatData([...res.data.flats])
           console.log(res.data);
        
          setpages(res.data.pages)
       }).catch((err)=>{
-        // dispatch(toggleLoading(false))   
+        dispatch(toggleLoading(false))   
       })
  }
  useEffect(()=>{
-getData();
+    if(_id){
+
+        getData();
+    } 
  },[])
  let navigate=useNavigate();
 function handlenaviagte(){

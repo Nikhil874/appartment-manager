@@ -156,7 +156,7 @@ return(
         </TableBody>
         </Table>
         </TableContainer>
-        <h2>No of Pages:{pages}</h2>
+        {pages>0?<h2>No of Pages:{pages}</h2>:""}
         {page>1? <Button variant="contained" onClick={()=>handlepage(-1)} >Prev</Button>:""}
        
         {" "}

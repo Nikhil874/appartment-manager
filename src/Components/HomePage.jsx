@@ -17,16 +17,19 @@ import Stack from '@mui/material/Stack';
 import { toggleLoading } from "../loginDetails/action";
 import CircularProgress from '@mui/material/CircularProgress';
 export const HomePage=()=>{
+    let [pages,setpages]=useState(0);
+    
     let [flatData,setFlatData]=useState([]);
     const _id =useSelector((store)=>store._id)
     // console.log(_id).
  const  getData=async()=>{
     // dispatch(toggleLoading(true))
-     await axios.get(`https://appartment-server.herokuapp.com/flats/${_id}`).then((res)=>{
+     await axios.get(`https://appartment-server.herokuapp.com/flats/${_id}?page=${page}`).then((res)=>{
         // dispatch(toggleLoading(false))
-          setFlatData([...res.data])
+          setFlatData([...res.data.flats])
           console.log(res.data);
-
+       
+         setpages(res.data.pages)
       }).catch((err)=>{
         // dispatch(toggleLoading(false))   
       })
@@ -76,6 +79,16 @@ function handleLogining(){
         console.log(owner);
     }
     let loading =useSelector((store)=>store.loading);
+    let [page,setPage]=useState(1);
+    console.log("page",page);
+    function handlepage(value){
+        if(page+value<=1&&page+value>pages){
+            return;
+        }else{
+            setPage(page+value);
+            getData();
+        }
+    }
 return(
     <>
     {loading?<CircularProgress color="secondary"/>:
@@ -140,6 +153,11 @@ return(
         </TableBody>
         </Table>
         </TableContainer>
+        <h2>No of Pages:{pages}</h2>
+        {page>1? <Button variant="contained" onClick={()=>handlepage(-1)} >Prev</Button>:""}
+       
+        {" "}
+        {page<pages? <Button variant="contained" onClick={()=>handlepage(1)} >Next</Button>:""}
         </>}
         </>
 )
